@@ -68,4 +68,4 @@ jobs:
         with:
           app-name: 'easyformy'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_30D51C9517B44AAB9E05710EC1266A62 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EC5EAB3A2454463FBE80C98AE953914E }}
