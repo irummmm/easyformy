@@ -1486,7 +1486,7 @@ def draw_text_in_area_centered(can, text, x1, y1, x2, y2):
 
     # 각 줄 그리기
     for i, line in enumerate(lines):
-        text_width = pdfmetrics.stringWidth(line, 'NanumGothic', 10)
+        text_width = pdfmetrics.stringWidth(line, 'NotoSansKR', 10)
         text_x = x1 + (max_width - text_width) / 2
         text_y = start_y - i * line_height
         can.drawString(text_x, text_y, line)
@@ -1504,7 +1504,7 @@ def split_text_to_fit(text, max_width):
 
     for word in words:
         test_line = current_line + (" " if current_line else "") + word
-        if pdfmetrics.stringWidth(test_line, 'NanumGothic', 10) <= max_width:
+        if pdfmetrics.stringWidth(test_line, 'NotoSansKR', 10) <= max_width:
             current_line = test_line
         else:
             if current_line:
