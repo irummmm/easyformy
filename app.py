@@ -92,14 +92,14 @@ blob_service_client = BlobServiceClient(
 # Container Client 가져오기
 container_client = blob_service_client.get_container_client(AZURE_CONTAINER)
 
-# 한글 폰트 등록
-font_path = os.path.join(os.path.dirname(__file__), 'fonts', 'NanumGothic.ttf')
-if os.path.exists(font_path):
-    pdfmetrics.registerFont(TTFont('NanumGothic', font_path))
-else:
-    # 폰트가 없는 경우 기본 폰트 사용
-    pdfmetrics.registerFont(TTFont('NanumGothic', 'C:/Windows/Fonts/malgun.ttf'))
+# 상대 경로 기반으로 폰트 경로 지정
+font_path = os.path.join(os.path.dirname(__file__), 'fonts', 'NotoSansKR-Regular.ttf')
 
+if os.path.exists(font_path):
+    pdfmetrics.registerFont(TTFont('NotoSansKR-Regular.ttf', font_path))
+else:
+    raise FileNotFoundError(f"폰트 파일을 찾을 수 없습니다: {font_path}")
+    
 # Passport 모델 정의
 class Passport(db.Model):
     id = db.Column(db.Integer, primary_key=True)
