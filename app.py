@@ -36,6 +36,9 @@ from openai import AzureOpenAI
 import mysql.connector
 from mysql.connector import Error
 from langchain_community.retrievers import AzureCognitiveSearchRetriever
+from langchain_community import retrievers
+from werkzeug.exceptions import HTTPException
+
 
 # 명시적으로 .env.txt 파일 경로 지정
 load_dotenv('.env.txt', encoding='utf-8')
