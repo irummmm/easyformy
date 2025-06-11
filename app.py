@@ -52,6 +52,10 @@ CORS(app, resources={
     }
 })
 
+@app.route("/")
+def home():
+    return "Flask 앱이 정상적으로 실행되고 있습니다."
+    
 # 서버 URL 설정
 SERVER_URL = 'http://192.168.35.173:5000'  # 새로운 서버 IP 주소
 
@@ -457,7 +461,7 @@ with app.app_context():
     except Exception as e:
         print("데이터베이스 연결 실패!")
         print("에러 메시지:", str(e))
-
+    
 # 데이터베이스 연결 상태 확인 엔드포인트
 @app.route('/check-db', methods=['GET'])
 def check_db():
