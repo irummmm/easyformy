@@ -93,10 +93,10 @@ blob_service_client = BlobServiceClient(
 container_client = blob_service_client.get_container_client(AZURE_CONTAINER)
 
 # 상대 경로 기반으로 폰트 경로 지정
-font_path = os.path.join(os.path.dirname(__file__), 'fonts', 'NotoSansKR-Regular.ttf')
+font_path = os.path.join(os.path.dirname(__file__), 'fonts', 'NotoSansKR-VariableFont_wght.ttf')
 
 if os.path.exists(font_path):
-    pdfmetrics.registerFont(TTFont('NotoSansKR-Regular.ttf', font_path))
+    pdfmetrics.registerFont(TTFont('NotoSansKR', font_path))
 else:
     raise FileNotFoundError(f"폰트 파일을 찾을 수 없습니다: {font_path}")
     
