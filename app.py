@@ -203,7 +203,7 @@ class User(db.Model):
         }
 
 # OCR 설정
-OCR_ENDPOINT =  os.getenv("OCT_ENDPOINT")
+OCR_ENDPOINT =  os.getenv("OCR_ENDPOINT")
 OCR_KEY =  os.getenv("OCR_KEY")
 OCR_URL = f"{OCR_ENDPOINT}/vision/v3.2/read/analyze"
 
