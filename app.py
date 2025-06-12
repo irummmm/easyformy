@@ -1474,7 +1474,7 @@ def draw_text_in_area_centered(can, text, x1, y1, x2, y2):
         return
 
     # 한글 폰트 설정
-    can.setFont('NanumGothic', 10)
+    can.setFont('NotoSansKR', 10)
     line_height = 12
     max_width = x2 - x1
     box_height = y2 - y1
@@ -1488,7 +1488,7 @@ def draw_text_in_area_centered(can, text, x1, y1, x2, y2):
 
     # 각 줄 그리기
     for i, line in enumerate(lines):
-        text_width = pdfmetrics.stringWidth(line, 'NanumGothic', 10)
+        text_width = pdfmetrics.stringWidth(line, 'NotoSansKR', 10)
         text_x = x1 + (max_width - text_width) / 2
         text_y = start_y - i * line_height
         can.drawString(text_x, text_y, line)
@@ -1506,7 +1506,7 @@ def split_text_to_fit(text, max_width):
 
     for word in words:
         test_line = current_line + (" " if current_line else "") + word
-        if pdfmetrics.stringWidth(test_line, 'NanumGothic', 10) <= max_width:
+        if pdfmetrics.stringWidth(test_line, 'NotoSansKR', 10) <= max_width:
             current_line = test_line
         else:
             if current_line:
@@ -1552,7 +1552,7 @@ def generate_complaint_pdf():
                 page = pdf_reader.pages[page_num]
                 packet = io.BytesIO()
                 can = canvas.Canvas(packet, pagesize=letter)
-                can.setFont('NanumGothic', 10)
+                can.setFont('NotoSansKR', 10)
 
                 current_page_fields = page_fields.get(page_num + 1, [])
                 
@@ -1699,7 +1699,7 @@ def generate_registration_pdf():
                 page = pdf_reader.pages[page_num]
                 packet = io.BytesIO()
                 can = canvas.Canvas(packet, pagesize=letter)
-                can.setFont('NanumGothic', 10)  # 한글 폰트 설정
+                can.setFont('NotoSansKR', 10)  # 한글 폰트 설정
 
                 for field, value in data.items():
                     try:
