@@ -22,8 +22,6 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.pagesizes import letter
 from azure.storage.blob import BlobServiceClient, ContentSettings, generate_blob_sas, BlobSasPermissions, AccountSasPermissions, ResourceTypes, generate_account_sas
 import uuid
-from fastapi import FastAPI, UploadFile, File, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from io import BytesIO
 import tempfile
