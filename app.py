@@ -22,6 +22,8 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.pagesizes import letter
 from azure.storage.blob import BlobServiceClient, ContentSettings, generate_blob_sas, BlobSasPermissions, AccountSasPermissions, ResourceTypes, generate_account_sas
 import uuid
+from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from typing import List
 from io import BytesIO
 import tempfile
@@ -35,10 +37,8 @@ from langchain.chains import ConversationalRetrievalChain
 from openai import AzureOpenAI
 import mysql.connector
 from mysql.connector import Error
+#from langchain_community.retrievers.azure_cognitive_search import AzureCognitiveSearchRetriever
 from langchain_community.retrievers import AzureCognitiveSearchRetriever
-from langchain_community import retrievers
-from werkzeug.exceptions import HTTPException
-
 
 # 명시적으로 .env.txt 파일 경로 지정
 load_dotenv('.env.txt', encoding='utf-8')
@@ -52,13 +52,13 @@ CORS(app, resources={
     }
 })
 
+
 @app.route("/")
 def home():
     return "Flask 앱이 정상적으로 실행되고 있습니다."
-    
+
 # 서버 URL 설정
 SERVER_URL = 'http://192.168.35.173:5000'  # 새로운 서버 IP 주소
-
 
 # DB 설정
 MYSQL_USER = os.getenv("MYSQL_USER")
@@ -79,6 +79,7 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=1)
 
 # DB 초기화
 db = SQLAlchemy(app)
+
 
 
 
@@ -103,7 +104,7 @@ if os.path.exists(font_path):
     pdfmetrics.registerFont(TTFont('NotoSansKR', font_path))
 else:
     raise FileNotFoundError(f"폰트 파일을 찾을 수 없습니다: {font_path}")
-    
+
 # Passport 모델 정의
 class Passport(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -461,7 +462,7 @@ with app.app_context():
     except Exception as e:
         print("데이터베이스 연결 실패!")
         print("에러 메시지:", str(e))
-    
+
 # 데이터베이스 연결 상태 확인 엔드포인트
 @app.route('/check-db', methods=['GET'])
 def check_db():
@@ -1490,7 +1491,7 @@ def draw_text_in_area_centered(can, text, x1, y1, x2, y2):
 
     # 각 줄 그리기
     for i, line in enumerate(lines):
-        text_width = pdfmetrics.stringWidth(line, 'NotoSansKR', 10)
+        text_width = pdfmetrics.stringWidth(line, 'NanumGothic', 10)
         text_x = x1 + (max_width - text_width) / 2
         text_y = start_y - i * line_height
         can.drawString(text_x, text_y, line)
@@ -1508,7 +1509,7 @@ def split_text_to_fit(text, max_width):
 
     for word in words:
         test_line = current_line + (" " if current_line else "") + word
-        if pdfmetrics.stringWidth(test_line, 'NotoSansKR', 10) <= max_width:
+        if pdfmetrics.stringWidth(test_line, 'NanumGothic', 10) <= max_width:
             current_line = test_line
         else:
             if current_line:
@@ -2787,16 +2788,7 @@ def complaint_evidence(query):
         {
             "role": "system",
             "content": (
-                '''너는 외국인 근로자의 민원을 접수하기 위한 진정서 작성 도우미야. 사용자는 한국에서 체류 또는 근로 중 겪은 문제 상황을 설명할 거야.
-너는 사용자의 상황을 다음 순서에 따라 진정서 본문 형식으로 자동 정리해야 해:
- 
-1. **문제 상황 정리 (육하원칙)**: 누가, 언제, 어디서, 무엇을, 왜, 어떻게 당했는지를 간결하게 요약
-2. **관련 법 조항 제시**: 근로기준법, 출입국관리법, 외국인고용법 등에서 어떤 법이 위반되었는지 제시
-3. **유사한 판례/행정해석 제시**: 실제 사례 중 유사한 것을 근거로 설명
-4. **문제의 심각성 강조**: 반복성, 인권침해, 차별 등의 측면에서 왜 시급히 해결되어야 하는지 설명
-5. **요구사항 정리**: 사용자가 요구하는 해결 방식(예: 시정 조치, 퇴직금 지급, 체류 연장 사유 인정 등)
- 
-모든 답변은 Chain of Thought 방식으로"본인은"으로 시작하고, “이런 상황 → 이런 법 위반 가능성 → 이런 사례 존재 → 따라서 이러한 절차와 처리를 요구합니다.”처럼 단계적으로 설명하고 자연스럽게 문장화해줘.'''
+                "당신은 한국의 근로기준법, 최저임금법, 외국인근로자의 고용 등에 관한 법률, 퇴직급여보장법에 정통한 AI 노무사입니다. \n당신의 역할은 외국인 근로자가 제공한 정보를 바탕으로, 실제 고용노동부에 제출 가능한 임금체불 진정서의 '진정 내용' 부분을 500자 이내로 전문적으로 작성하는 것입니다.\n\n작성 시 유의사항:\n- 문장은 정중하고 간결하며 객관적인 진술 형태로 작성합니다.\n- 사실관계, 법률 위반 요소(퇴직금 미지급, 체불임금 등), 대응 과정 등을 포함합니다.\n- 관련 법령에 근거하여 체불 사유가 위법임을 명시하는 문장을 포함합니다.\n- JSON의 각 항목(work_detail, period, location, wage, response)을 모두 반영하십시오.\n- 불필요한 반복 없이 자연스럽게 연결된 문단으로 구성하십시오.\n- 출력은 '진정인은'으로 시작하고 내용 문단 한 개만 출력하십시오.\n- 반드시 500자를 초과하지 않도록 하십시오.\n또한 사용자는 다양한 언어를 사용하기 떄문에 전달받은 내용을 기반으로 답변하는 내용은 무조건 Korean, 한국어로 작성합니다."
             )
         },
         {
@@ -2856,10 +2848,10 @@ def generate_complaint_evidence():
 
 def get_db_connection():
     return mysql.connector.connect(
-        host='team7.mysql.database.azure.com',
-        user='dlatjdals',
-        password='dhlrnrdls486@',
-        database='dhlrnrdls'
+        host=os.getenv("DB_HOST"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        database=os.getenv("DB_NAME")
     )
 
 if __name__ == '__main__':
