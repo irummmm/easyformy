@@ -55,7 +55,7 @@ def home():
     return "Flask 앱이 정상적으로 실행되고 있습니다."
 
 # 서버 URL 설정
-SERVER_URL = 'https://easyformy-cudaeth6dxe6h5cw.canadacentral-01.azurewebsites.net'  # 새로운 서버 IP 주소
+#SERVER_URL = 'https://easyformy-cudaeth6dxe6h5cw.canadacentral-01.azurewebsites.net'  # 새로운 서버 IP 주소
 
 # DB 설정
 MYSQL_USER = os.getenv("MYSQL_USER")
