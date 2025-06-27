@@ -33,7 +33,7 @@
 ---
 
 ## 📐 시스템 아키텍처
-![시스템 아키텍처](./architecture.png)
+![시스템 아키텍처](./architecture.jpg)
 
 ---
 
