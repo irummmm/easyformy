@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Background Circle -->
+    <circle cx="100" cy="100" r="90" fill="#2c5282" opacity="0.1"/>
+    
+    <!-- Globe Icon -->
+    <path d="M100 30C62.4 30 32 60.4 32 98C32 135.6 62.4 166 100 166C137.6 166 168 135.6 168 98C168 60.4 137.6 30 100 30ZM100 154C68.8 154 44 129.2 44 98C44 66.8 68.8 42 100 42C131.2 42 156 66.8 156 98C156 129.2 131.2 154 100 154Z" fill="#2c5282"/>
+    <path d="M100 42V154" stroke="#2c5282" stroke-width="4"/>
+    <path d="M44 98H156" stroke="#2c5282" stroke-width="4"/>
+    
+    <!-- Letter E -->
+    <path d="M70 80H110" stroke="#2c5282" stroke-width="6" stroke-linecap="round"/>
+    <path d="M70 98H110" stroke="#2c5282" stroke-width="6" stroke-linecap="round"/>
+    <path d="M70 116H110" stroke="#2c5282" stroke-width="6" stroke-linecap="round"/>
+    
+    <!-- Letter F -->
+    <path d="M120 80H160" stroke="#2c5282" stroke-width="6" stroke-linecap="round"/>
+    <path d="M120 98H160" stroke="#2c5282" stroke-width="6" stroke-linecap="round"/>
+    
+    <!-- Checkmark (✓) -->
+    <path d="M130 116L140 126L150 116" stroke="#2c5282" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg> 
